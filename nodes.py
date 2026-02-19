@@ -15,8 +15,8 @@ class ImagePadToMultiple:
             }
         }
 
-    RETURN_TYPES = ("IMAGE",)
-    RETURN_NAMES = ("image",)
+    RETURN_TYPES = ("IMAGE", "INT", "INT")
+    RETURN_NAMES = ("image", "width", "height")
     FUNCTION = "pad_to_multiple"
     CATEGORY = "image/transform"
 
@@ -29,7 +29,7 @@ class ImagePadToMultiple:
         pad_right = new_width - width
 
         if pad_bottom == 0 and pad_right == 0:
-            return (image,)
+            return (image, int(new_width), int(new_height))
 
         color_values = {
             "black": 0.0,
@@ -39,4 +39,4 @@ class ImagePadToMultiple:
         fill_value = color_values[pad_color]
 
         padded = F.pad(image, (0, 0, 0, pad_right, 0, pad_bottom), mode="constant", value=fill_value)
-        return (padded,)
+        return (padded, int(new_width), int(new_height))

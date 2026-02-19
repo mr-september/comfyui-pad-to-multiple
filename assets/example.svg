@@ -5,9 +5,9 @@
   <rect x="44" y="76" width="257" height="97" fill="#22d3ee"/>
   <text x="44" y="192" fill="#d1d5db" font-size="14" font-family="Arial, sans-serif">Input: 257×97</text>
   <text x="346" y="132" fill="#f3f4f6" font-size="40" font-family="Arial, sans-serif">→</text>
-  <rect x="412" y="60" width="320" height="160" fill="#1f2937" stroke="#9ca3af" stroke-width="2"/>
+  <rect x="412" y="60" width="304" height="144" fill="#1f2937" stroke="#9ca3af" stroke-width="2"/>
   <rect x="428" y="76" width="257" height="97" fill="#22d3ee"/>
-  <rect x="685" y="76" width="31" height="97" fill="#808080"/>
-  <rect x="428" y="173" width="288" height="31" fill="#808080"/>
-  <text x="428" y="214" fill="#d1d5db" font-size="14" font-family="Arial, sans-serif">Output: 288×128 (right + bottom padded)</text>
+  <rect x="685" y="76" width="15" height="97" fill="#808080"/>
+  <rect x="428" y="173" width="272" height="15" fill="#808080"/>
+  <text x="428" y="198" fill="#d1d5db" font-size="14" font-family="Arial, sans-serif">Output: 272×112 (right + bottom padded)</text>
 </svg>

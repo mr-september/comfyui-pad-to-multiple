@@ -14,6 +14,8 @@ It pads an image on the **right** and **bottom** only so both width and height a
   - `pad_color` (`black`, `white`, `gray`)
 - **Output:**
   - `image` (`IMAGE`)
+  - `width` (`INT`)
+  - `height` (`INT`)
 
 ## Example
 
