@@ -1,14 +1,24 @@
 # ComfyUI Pad to Multiple
 
-A simple ComfyUI custom node that pads images to ensure width and height are multiples of a specified number (e.g., 16, 32, 64). Padding is added only to the right and bottom edges with a configurable solid color.
+A minimal ComfyUI custom node package that adds one node: **ImagePadToMultiple**.
 
-## Why This Exists
+It pads an image on the **right** and **bottom** only so both width and height are divisible by a selected integer, without resizing, cropping, or stretching.
 
-Many AI models (VAEs, UNets, etc.) require input dimensions to be divisible by specific numbers (commonly 8, 16, or 32). This node ensures your images meet those requirements without resizing or cropping, preserving the original content while adding minimal padding.
+## Node
 
-## Features
+- **Name:** `ImagePadToMultiple`
+- **Category:** `image/transform`
+- **Inputs:**
+  - `image` (`IMAGE`)
+  - `multiple_of` (`INT`, default `16`, min `1`, max `256`)
+  - `pad_color` (`black`, `white`, `gray`)
+- **Output:**
+  - `image` (`IMAGE`)
 
-- Pads right and bottom edges only (preserves top-left alignment)
-- Configurable multiple (1-256, default 16)
-- Choice of pad colors: black, white, or gray
-- Zero dependencies beyond PyTorch (already in ComfyUI)
+## Example
+
+![ImagePadToMultiple example](assets/example.svg)
+
+## Install
+
+Clone this repository into your ComfyUI `custom_nodes` folder and restart ComfyUI.
