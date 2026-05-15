@@ -1,26 +1,76 @@
 # ComfyUI Pad to Multiple
 
-A minimal ComfyUI custom node package that adds one node: **ImagePadToMultiple**.
+A minimal ComfyUI custom node that adds one node: `ImagePadToMultiple`.
 
-It pads an image on the **right** and **bottom** only so both width and height are divisible by a selected integer, without resizing, cropping, or stretching.
+## What it does
 
-## Node
+Pads an image on the **right** and **bottom** only so both width and height are divisible by a number you pick (default `16`). Uses a solid color for the padding. Nothing gets resized, cropped, or stretched.
 
-- **Name:** `ImagePadToMultiple`
-- **Category:** `image/transform`
-- **Inputs:**
-  - `image` (`IMAGE`)
-  - `multiple_of` (`INT`, default `16`, min `1`, max `256`)
-  - `pad_color` (`black`, `white`, `gray`)
-- **Output:**
-  - `image` (`IMAGE`)
-  - `width` (`INT`)
-  - `height` (`INT`)
+Most diffusion and transformer models need input dimensions divisible by specific values, like 64 for SD 1.5 / DiT, 8 for SDXL, 16 or 32 for Flux / SD3. If your image is 513×513 it won't work as-is, and the common workarounds (stretch, crop, resize-then-crop) all silently destroy your image.
 
-## Example
+Padding is the right answer. The colored border shows you exactly where the padding is, so you can crop it off later in Photoshop, GIMP, or whatever you use.
+
+## Why not just resize or crop?
+
+They sound fine until they aren't:
+
+- **Resize (stretch):** Warps everything. Faces, text, architecture all distorted.
+- **Center crop:** Cuts off the edges. Your subject might be near the border. Gone.
+- **Resize + crop:** Combines both problems. First warps, then chops.
+
+The padding approach keeps your original content untouched. The padded pixels are a solid color you chose, so you can find them and remove them trivially.
+
+## Node: `ImagePadToMultiple`
+
+**Category:** `image/transform`
+
+### Inputs
+
+| Input | Type | Default | What it does |
+|---|---|---|---|
+| `image` | `IMAGE` | — | The image to pad |
+| `multiple_of` | `INT` | `16` | Divisor target (1–256). Set to 64 for SD 1.5, 8 for SDXL, etc. |
+| `pad_color` | enum | `"black"` | Padding color: `black`, `white`, or `gray` |
+
+### Outputs
+
+| Output | Type | What it is |
+|---|---|---|
+| `image` | `IMAGE` | Padded image tensor |
+| `width` | `INT` | Width after padding |
+| `height` | `INT` | Height after padding |
+
+### How to use it
+
+1. Plug your image into the `image` input.
+2. Set `multiple_of` to whatever your model needs. 8, 16, 32, 64 — depends on the model.
+3. Pick a `pad_color` that you can see against your image. Gray works for most things.
+4. Run your normal pipeline.
+5. After generation, crop the output back to your original size. The `width` and `height` outputs tell you the new padded dimensions so you know exactly how much to trim.
+
+### Example
 
 ![ImagePadToMultiple example](assets/example.svg)
 
+A 257×97 image padded to 272×112 with `multiple_of=16`. 15px of gray padding added on the right and bottom.
+
 ## Install
 
-Clone this repository into your ComfyUI `custom_nodes` folder and restart ComfyUI.
+Copy into your ComfyUI custom nodes directory and restart:
+
+```bash
+cd ComfyUI/custom_nodes
+git clone https://github.com/mr-september/comfyui-pad-to-multiple.git
+```
+
+Also available through the ComfyUI Manager.
+
+## Compatibility
+
+- ComfyUI: current stable
+- Python: 3.10+
+- Extra dependencies: none (just PyTorch, which you already have)
+
+## License
+
+MIT
