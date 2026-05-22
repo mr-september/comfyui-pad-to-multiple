@@ -41,6 +41,7 @@ The padding approach keeps your original content untouched. The padded pixels ar
 | `image` | `IMAGE` | Padded image tensor |
 | `width` | `INT` | Width after padding |
 | `height` | `INT` | Height after padding |
+| `mask` | `MASK` | Mask of the padded area (1.0 = padding, 0.0 = original image) |
 
 ### How to use it
 

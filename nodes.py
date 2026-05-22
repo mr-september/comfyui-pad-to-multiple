@@ -18,8 +18,8 @@ class ImagePadToMultiple:
             }
         }
 
-    RETURN_TYPES = ("IMAGE", "INT", "INT")
-    RETURN_NAMES = ("image", "width", "height")
+    RETURN_TYPES = ("IMAGE", "INT", "INT", "MASK")
+    RETURN_NAMES = ("image", "width", "height", "mask")
     FUNCTION = "pad_to_multiple"
     CATEGORY = "image/transform"
 
@@ -78,7 +78,8 @@ class ImagePadToMultiple:
         new_height = height + pad_top + pad_bottom
 
         if pad_top == 0 and pad_bottom == 0 and pad_left == 0 and pad_right == 0:
-            return (image, int(new_width), int(new_height))
+            mask = torch.zeros((image.shape[0], int(new_height), int(new_width)), dtype=torch.float32, device=image.device)
+            return (image, int(new_width), int(new_height), mask)
 
         color_values = {
             "black": 0.0,
@@ -88,4 +89,8 @@ class ImagePadToMultiple:
         fill_value = color_values[pad_color]
 
         padded = F.pad(image, (0, 0, pad_left, pad_right, pad_top, pad_bottom), mode="constant", value=fill_value)
-        return (padded, int(new_width), int(new_height))
+        
+        base_mask = torch.zeros((image.shape[0], height, width), dtype=torch.float32, device=image.device)
+        padded_mask = F.pad(base_mask, (pad_left, pad_right, pad_top, pad_bottom), mode="constant", value=1.0)
+        
+        return (padded, int(new_width), int(new_height), padded_mask)
